@@ -1,1 +1,45 @@
 # pytest-backend-tests
+
+This repository provides frameworks for API tests, managed by [`pytest`](https://docs.pytest.org/en/7.4.x/).
+Each test call API by [`requests`](https://pypi.org/project/requests/) package which allows easily send requests
+and response code status are validated with [`HTTPStatus`](https://docs.python.org/3/library/http.html).
+
+# Table of Contents
+
+## Folder Structure
+
+```
+pytest-backend-tests/
+├── tests/                  # API test specifications (test_*.py)
+│    └── helpers/           # Assertions for schema checks and static variables
+│         └── support/      # JSON schemas used for assertions 
+└── requirements.txt        # Test dependencies
+```
+
+## Local Development
+
+1. Please ensure that [`Makefile`](https://makefiletutorial.com) is installed on your local machine before proceeding.
+2. Install the virtual environment by running:
+   ```
+    make install-virtual-environment
+   ```
+3. Install  dependencies by running: 
+    ```
+    make install-dependencies
+    ```
+   
+### Run tests
+
+1. Execute API Tests by running:
+   ```
+    make api-tests
+    ```
+   
+## TEST STRATEGY
+For each request, we should cover following general test scenario groups:
+   -  Basic positive tests (happy paths)
+     - This check should validate the json schema.
+     - The schema can be created with this [tool](https://jsonformatter.org/json-to-jsonschema), all current schemas can be found `tests/api/helpers/support/schemas`
+   - Extended positive testing with optional parameters to check crucial fields in response depending on test case objectives.
+   - Negative testing with valid input.
+   - Negative testing with invalid input (error handling).
