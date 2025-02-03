@@ -10,11 +10,11 @@ jobs:
     steps:
       - name: "Checkout branch"
         uses: actions/checkout@v4
-      - name: Set up Python
+      - name: "Set up Python"
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-        run: make install-virtual-environment
+      - run: make install-virtual-environment
       - name: "Install tests dependencies"
         run: make install-dependencies
       - name: "Run API tests"

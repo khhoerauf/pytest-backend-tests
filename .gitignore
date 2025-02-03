@@ -1,7 +1,7 @@
 .venv
 .pytest_cache
 __pycache__/
-.idea/
+.idea
 .history
 .DS_Store
 *.bak
