@@ -1,3 +1,6 @@
+.PHONY: help install-virtual-environment install-dependencies api-tests lint format
+SHELL := /bin/bash
+
 install-virtual-environment:
 	@echo "Installing Python virtual environment..."
 	python3 -m venv .venv
