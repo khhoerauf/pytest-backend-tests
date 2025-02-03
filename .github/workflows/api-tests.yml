@@ -1,14 +1,11 @@
 name: api-tests
 
-on:
-  push:
-    branches:
-      - '**'
+on: [push]
 
 jobs:
-  runs-on: ubuntu-latest
-
   api-test:
+    runs-on: ubuntu-latest
+
     steps:
       - name: "Checkout branch"
         uses: actions/checkout@v4
