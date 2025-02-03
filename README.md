@@ -1,19 +1,25 @@
-# pytest-backend-tests
+# Backed Tests with PyTest
 
 This repository provides frameworks for API tests, managed by [`pytest`](https://docs.pytest.org/en/7.4.x/).
 Each test call API by [`requests`](https://pypi.org/project/requests/) package which allows easily send requests
 and response code status are validated with [`HTTPStatus`](https://docs.python.org/3/library/http.html).
 
-# Table of Contents
+## Table of Contents
+
+- [Folder Structure](#folder-structure)
+- [Local Development](#local-development)
+- [Test Strategy](#test-strategy)
+
 
 ## Folder Structure
 
 ```
 pytest-backend-tests/
-├── tests/                  # API test specifications (test_*.py)
-│    └── helpers/           # Assertions for schema checks and static variables
-│         └── support/      # JSON schemas used for assertions 
-└── requirements.txt        # Test dependencies
+├── tests/                  # Contains test scripts, following the test_*.py naming convention for pytest.
+│    └── helpers/           # Stores reusable utilities like custom assertions and static variables.
+│         └── support/      # Holds JSON schemas for validating API responses.
+├── Makefile                # Defines scripts for running tests, setting up environments etc.
+└── requirements.txt        # Lists dependencies for setting up the test environment.
 ```
 
 ## Local Development
@@ -35,7 +41,7 @@ pytest-backend-tests/
     make api-tests
     ```
    
-## TEST STRATEGY
+## Test Strategy
 For each request, we should cover following general test scenario groups:
    -  Basic positive tests (happy paths)
      - This check should validate the json schema.
