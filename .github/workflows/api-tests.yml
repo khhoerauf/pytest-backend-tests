@@ -6,6 +6,8 @@ on:
       - '**'
 
 jobs:
+  runs-on: ubuntu-latest
+
   api-test:
     steps:
       - name: "Checkout branch"
