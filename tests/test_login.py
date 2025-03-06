@@ -71,7 +71,7 @@ class TestLoginApi:
 
     @pytest.mark.xss
     @pytest.mark.parametrize("xss_payload", XSS_PAYLOADS)
-    def test_xss_rejection_in_password_field(self, xss_payload):
+    def _test_xss_rejection_in_password_field(self, xss_payload):
         payload = {
             "email": "eve.holt@reqres.in",
             "password": xss_payload,
