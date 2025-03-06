@@ -3,7 +3,7 @@ from os.path import dirname, join
 from jsonschema import validate
 
 
-class Assertions:
+class SchemaAssertions:
 
     def load_json_schema(self, filename):
         relative_path = join("support/schemas", filename)

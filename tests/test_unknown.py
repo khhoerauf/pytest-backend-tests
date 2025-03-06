@@ -2,12 +2,12 @@ import pytest
 import requests
 from http import HTTPStatus
 from tests.helpers.constants import API_HOST
-from tests.helpers.assertions import Assertions
+from tests.helpers.assertions import SchemaAssertions
 
 ENDPOINT = f"{API_HOST}/unknown"
 
 
-@pytest.mark.api
+@pytest.mark.unknown
 class TestUnknownApi:
 
     @pytest.mark.parametrize(
@@ -18,7 +18,7 @@ class TestUnknownApi:
         ],
     )
     def test_get_users_success(self, query, schema):
-        utilis = Assertions()
+        utilis = SchemaAssertions()
         response = requests.get(url=f"{ENDPOINT}{query}")
         assert response.status_code == HTTPStatus.OK
         utilis.assert_valid_schema(response.json(), schema)

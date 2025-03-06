@@ -3,12 +3,12 @@ import requests
 import time
 from http import HTTPStatus
 from tests.helpers.constants import API_HOST
-from tests.helpers.assertions import Assertions
+from tests.helpers.assertions import SchemaAssertions
 
 ENDPOINT = f"{API_HOST}/users"
 
 
-@pytest.mark.api
+@pytest.mark.users
 class TestUsersApi:
     @pytest.mark.parametrize(
         "query, schema",
@@ -19,13 +19,13 @@ class TestUsersApi:
         ],
     )
     def test_get_users_success(self, query, schema):
-        utilis = Assertions()
+        utilis = SchemaAssertions()
         response = requests.get(url=f"{ENDPOINT}{query}")
         assert response.status_code == HTTPStatus.OK
         utilis.assert_valid_schema(response.json(), schema)
 
     def test_get_users_with_delay_param_success(self):
-        utilis = Assertions()
+        utilis = SchemaAssertions()
         start_time = time.time()
         response = requests.get(url=f"{ENDPOINT}", params="delay=3")
         end_time = time.time()
