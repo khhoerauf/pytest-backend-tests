@@ -36,16 +36,23 @@ pytest-backend-tests/
    
 ### Run tests
 
-1. Execute API Tests by running:
-   ```
+- Execute all API Tests by running:
+    ```commandline
     make api-tests
     ```
    
+- Tests are written using the pytest mark feature, which allows you to execute only a selected test suite. 
+  For example, to run tests for the login feature, use the following command:
+    ```commandline
+    pytest -m login
+    ```
+
 ## Test Strategy
 For each request, we should cover following general test scenario groups:
    -  Basic positive tests (happy paths)
      - This check should validate the json schema.
-     - The schema can be created with this [tool](https://jsonformatter.org/json-to-jsonschema), all current schemas can be found `tests/api/helpers/support/schemas`
+     - The schema can be created with this [tool](https://jsonformatter.org/json-to-jsonschema), all current schemas can be found `tests/helpers/support/schemas`
    - Extended positive testing with optional parameters to check crucial fields in response depending on test case objectives.
    - Negative testing with valid input.
    - Negative testing with invalid input (error handling).
+   - Cover Cross-Site Scripting (XSS) attacks, to prevent input from an HTTP request, make its way into the HTML output.
