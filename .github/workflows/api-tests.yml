@@ -1,6 +1,8 @@
 name: api-tests
 
-on: [push]
+on:
+  push:               # triggers on every push
+  workflow_dispatch:  # allows manual trigger
 
 jobs:
   api-test:
