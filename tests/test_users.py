@@ -2,7 +2,7 @@ import pytest
 import requests
 import time
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST
+from tests.helpers.constants import API_HOST, API_KEY
 from tests.helpers.assertions import SchemaAssertions
 
 ENDPOINT = f"{API_HOST}/users"
@@ -20,14 +20,14 @@ class TestUsersApi:
     )
     def test_get_users_success(self, query, schema):
         utilis = SchemaAssertions()
-        response = requests.get(url=f"{ENDPOINT}{query}")
+        response = requests.get(url=f"{ENDPOINT}{query}", headers=API_KEY)
         assert response.status_code == HTTPStatus.OK
         utilis.assert_valid_schema(response.json(), schema)
 
     def test_get_users_with_delay_param_success(self):
         utilis = SchemaAssertions()
         start_time = time.time()
-        response = requests.get(url=f"{ENDPOINT}", params="delay=3")
+        response = requests.get(url=f"{ENDPOINT}", params="delay=3", headers=API_KEY)
         end_time = time.time()
         response_time = end_time - start_time
 
@@ -36,28 +36,28 @@ class TestUsersApi:
         assert response_time > 3
 
     def test_get_users_with_query_not_found(self):
-        response = requests.get(url=f"{ENDPOINT}/23")
+        response = requests.get(url=f"{ENDPOINT}/23", headers=API_KEY)
         assert response.status_code == HTTPStatus.NOT_FOUND
 
     def test_post_users_without_payload_success(self):
-        response = requests.post(url=f"{ENDPOINT}/2")
+        response = requests.post(url=f"{ENDPOINT}/2", headers=API_KEY)
         assert response.status_code == HTTPStatus.CREATED
 
     def test_post_users_with_payload_success(self):
         payload = {"name": "morpheus", "job": "leader"}
-        response = requests.post(url=f"{ENDPOINT}/2", data=payload)
+        response = requests.post(url=f"{ENDPOINT}/2", data=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.CREATED
         assert response.json()["name"] == payload["name"]
         assert response.json()["job"] == payload["job"]
 
     def test_delete_users_success(self):
-        response = requests.delete(url=f"{ENDPOINT}/2")
+        response = requests.delete(url=f"{ENDPOINT}/2", headers=API_KEY)
         assert response.status_code == HTTPStatus.NO_CONTENT
 
     def test_put_users_success(self):
-        response = requests.put(url=f"{ENDPOINT}/2")
+        response = requests.put(url=f"{ENDPOINT}/2", headers=API_KEY)
         assert response.status_code == HTTPStatus.OK
 
     def test_patch_users_success(self):
-        response = requests.patch(url=f"{ENDPOINT}/2")
+        response = requests.patch(url=f"{ENDPOINT}/2", headers=API_KEY)
         assert response.status_code == HTTPStatus.OK

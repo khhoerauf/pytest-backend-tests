@@ -1,7 +1,7 @@
 import pytest
 import requests
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST, XSS_PAYLOADS
+from tests.helpers.constants import API_HOST, API_KEY, XSS_PAYLOADS
 
 ENDPOINT = f"{API_HOST}/register"
 
@@ -11,25 +11,25 @@ class TestRegisterApi:
 
     def test_post_register_with_payload_success(self):
         payload = {"email": "eve.holt@reqres.in", "password": "pistol"}
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.OK
         assert response.json()["token"] is not None
 
     def test_post_register_without_password_unsuccessful(self):
         payload = {"email": "morpheus"}
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.json()["error"] == "Missing password"
 
     def test_post_register_without_email_unsuccessful(self):
         payload = {"password": "pistol"}
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert response.json()["error"] == "Missing email or username"
 
     def test_post_register_incorrect_email_unsuccessful(self):
         payload = {"email": "eve.holt", "password": "pistol"}
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.BAD_REQUEST
         assert (
             response.json()["error"] == "Note: Only defined users succeed registration"
@@ -44,7 +44,7 @@ class TestRegisterApi:
     )
     def test_post_register_password_validation_success(self, password):
         payload = {"email": "eve.holt@reqres.in", "password": password}
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.BAD_REQUEST
 
     @pytest.mark.parametrize(
@@ -53,7 +53,7 @@ class TestRegisterApi:
     )
     def test_post_register_password_validation_unsuccessful(self, password):
         payload = {"email": "eve.holt@reqres.in", "password": password}
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
         assert response.status_code == HTTPStatus.OK
 
     @pytest.mark.xss
@@ -63,7 +63,7 @@ class TestRegisterApi:
             "email": xss_payload,
             "password": "password",
         }
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
 
         # Check if API allows XSS payloads (it should NOT)
         assert response.status_code in [
@@ -78,7 +78,7 @@ class TestRegisterApi:
             "email": "eve.holt@reqres.in",
             "password": xss_payload,
         }
-        response = requests.post(url=f"{ENDPOINT}", json=payload)
+        response = requests.post(url=f"{ENDPOINT}", json=payload, headers=API_KEY)
 
         # Check if API allows XSS payloads (it should NOT)
         assert response.status_code in [

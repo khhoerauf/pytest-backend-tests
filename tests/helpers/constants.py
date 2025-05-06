@@ -1,4 +1,5 @@
 API_HOST = "https://reqres.in/api"
+API_KEY = {"x-api-key": "reqres-free-v1"}
 XSS_PAYLOADS = [
     "<script>alert('XSS')</script>",
     "<img src=x onerror=alert('XSS')>",

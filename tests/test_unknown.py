@@ -1,7 +1,7 @@
 import pytest
 import requests
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST
+from tests.helpers.constants import API_HOST, API_KEY
 from tests.helpers.assertions import SchemaAssertions
 
 ENDPOINT = f"{API_HOST}/unknown"
@@ -19,10 +19,10 @@ class TestUnknownApi:
     )
     def test_get_users_success(self, query, schema):
         utilis = SchemaAssertions()
-        response = requests.get(url=f"{ENDPOINT}{query}")
+        response = requests.get(url=f"{ENDPOINT}{query}", headers=API_KEY)
         assert response.status_code == HTTPStatus.OK
         utilis.assert_valid_schema(response.json(), schema)
 
     def test_get_users_with_query_not_found(self):
-        response = requests.get(url=f"{ENDPOINT}/23")
+        response = requests.get(url=f"{ENDPOINT}/23", headers=API_KEY)
         assert response.status_code == HTTPStatus.NOT_FOUND
