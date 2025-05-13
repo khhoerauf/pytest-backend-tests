@@ -24,17 +24,25 @@ pytest-backend-tests/
 
 ## Local Development
 
-1. Please ensure that [`Makefile`](https://makefiletutorial.com) is installed on your local machine before proceeding.
-2. Install the virtual environment by running:
+1. Environment Variables:
+   - This project uses environment variable `API_KEY`. The API key used for authenticated requests.
+   - Create a file named `.env` in the root of your project and add the following:
+
+       ```env
+       API_KEY=your_actual_api_key_here
+       ```
+2. Please ensure that [`Makefile`](https://makefiletutorial.com) is installed on your local machine before proceeding.
+3. Install the virtual environment by running:
    ```
     make install-virtual-environment
    ```
-3. Install  dependencies by running: 
+   
+4. Install dependencies by running: 
     ```
     make install-dependencies
-    ```
+    ``` 
    
-### Run tests
+## Run tests
 
 - Execute all API Tests by running:
     ```commandline
