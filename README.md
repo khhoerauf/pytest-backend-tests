@@ -10,7 +10,6 @@ and response code status are validated with [`HTTPStatus`](https://docs.python.o
 - [Local Development](#local-development)
 - [Test Strategy](#test-strategy)
 
-
 ## Folder Structure
 
 ```
@@ -21,7 +20,6 @@ pytest-backend-tests/
 ├── Makefile                # Defines scripts for running tests, setting up environments etc.
 └── requirements.txt        # Lists dependencies for setting up the test environment.
 ```
-
 ## Local Development
 
 1. Environment Variables:
@@ -36,12 +34,10 @@ pytest-backend-tests/
    ```
     make install-virtual-environment
    ```
-   
 4. Install dependencies by running: 
     ```
     make install-dependencies
-    ``` 
-   
+    ```
 ## Run tests
 
 - Execute all API Tests by running:
