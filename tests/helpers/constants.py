@@ -1,4 +1,10 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 API_HOST = "https://reqres.in/api"
+API_KEY = {"x-api-key": os.getenv("API_KEY")}
 XSS_PAYLOADS = [
     "<script>alert('XSS')</script>",
     "<img src=x onerror=alert('XSS')>",

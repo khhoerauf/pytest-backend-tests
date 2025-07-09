@@ -1,11 +1,14 @@
 name: api-tests
 
-on: [push]
+on:
+  push:               # triggers on every push
+  workflow_dispatch:  # allows manual trigger
 
 jobs:
   api-test:
     runs-on: ubuntu-latest
-
+    env:
+      API_KEY: ${{ secrets.API_KEY }}
     steps:
       - name: "Checkout branch"
         uses: actions/checkout@v4
