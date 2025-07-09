@@ -1,8 +1,8 @@
-# Backed Tests with PyTest
+# Test Suite with PyTest
 
-This repository provides frameworks for API tests, managed by [`pytest`](https://docs.pytest.org/en/7.4.x/).
-Each test call API by [`requests`](https://pypi.org/project/requests/) package which allows easily send requests
-and response code status are validated with [`HTTPStatus`](https://docs.python.org/3/library/http.html).
+This repository provides a framework for testing a real API from https://reqres.in, managed by [`pytest`](https://docs.pytest.org/en/7.4.x/). 
+Each test call API by [`requests`](https://pypi.org/project/requests/) package which allows easily send requests and response code status 
+are validated with [`HTTPStatus`](https://docs.python.org/3/library/http.html).
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ pytest-backend-tests/
 ## Local Development
 
 1. Environment Variables:
-   - This project uses environment variable `API_KEY`. The API key used for authenticated requests.
+   - This project uses environment variable `API_KEY`. The API key used for authenticated requests, you can get free API key [here](https://app.reqres.in/signup).
    - Create a file named `.env` in the root of your project and add the following:
 
        ```env
