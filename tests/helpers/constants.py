@@ -5,6 +5,20 @@ load_dotenv()
 
 API_HOST = "https://reqres.in/api"
 API_KEY = {"x-api-key": os.getenv("API_KEY")}
+
+# Centralized endpoint definitions
+ENDPOINTS = {
+    "login": f"{API_HOST}/login",
+    "register": f"{API_HOST}/register",
+    "users": f"{API_HOST}/users",
+    "unknown": f"{API_HOST}/unknown",
+}
+
+LOGIN_ENDPOINT = ENDPOINTS["login"]
+REGISTER_ENDPOINT = ENDPOINTS["register"]
+USERS_ENDPOINT = ENDPOINTS["users"]
+UNKNOWN_ENDPOINT = ENDPOINTS["unknown"]
+
 XSS_PAYLOADS = [
     "<script>alert('XSS')</script>",
     "<img src=x onerror=alert('XSS')>",
