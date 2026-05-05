@@ -1,9 +1,9 @@
 import pytest
 import requests
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST, API_KEY, XSS_PAYLOADS
+from tests.helpers.constants import REGISTER_ENDPOINT, API_KEY, XSS_PAYLOADS
 
-ENDPOINT = f"{API_HOST}/register"
+ENDPOINT = REGISTER_ENDPOINT
 
 
 @pytest.mark.register

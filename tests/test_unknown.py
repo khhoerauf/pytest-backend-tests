@@ -1,10 +1,10 @@
 import pytest
 import requests
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST, API_KEY
+from tests.helpers.constants import UNKNOWN_ENDPOINT, API_KEY
 from tests.helpers.assertions import SchemaAssertions
 
-ENDPOINT = f"{API_HOST}/unknown"
+ENDPOINT = UNKNOWN_ENDPOINT
 
 
 @pytest.mark.unknown

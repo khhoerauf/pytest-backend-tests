@@ -2,10 +2,10 @@ import pytest
 import requests
 import time
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST, API_KEY
+from tests.helpers.constants import USERS_ENDPOINT, API_KEY
 from tests.helpers.assertions import SchemaAssertions
 
-ENDPOINT = f"{API_HOST}/users"
+ENDPOINT = USERS_ENDPOINT
 
 
 @pytest.mark.users

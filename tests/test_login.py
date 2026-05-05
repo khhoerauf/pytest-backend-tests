@@ -1,9 +1,9 @@
 import pytest
 import requests
 from http import HTTPStatus
-from tests.helpers.constants import API_HOST, API_KEY, XSS_PAYLOADS
+from tests.helpers.constants import LOGIN_ENDPOINT, API_KEY, XSS_PAYLOADS
 
-ENDPOINT = f"{API_HOST}/login"
+ENDPOINT = LOGIN_ENDPOINT
 
 
 @pytest.mark.login

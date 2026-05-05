@@ -11,13 +11,95 @@ jobs:
       API_KEY: ${{ secrets.API_KEY }}
     steps:
       - name: "Checkout branch"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: "Set up Python"
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.11'
       - run: make install-virtual-environment
       - name: "Install tests dependencies"
         run: make install-dependencies
-      - name: "Run API tests"
-        run: make api-tests
+      - name: "Run API tests with JUnit output"
+        run: |
+          source .venv/bin/activate
+          pytest -v --junitxml=test-results.xml
+          
+      - name: "Upload test results"
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-results
+          path: test-results.xml
+        
+  test-report:
+    runs-on: ubuntu-latest
+    needs: api-test
+    if: always()
+    steps:
+      - name: "Download test results"
+        uses: actions/download-artifact@v7
+        with:
+          name: test-results
+          
+      - name: "Generate detailed test report"
+        run: |
+          echo "## 📊 API Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -f "test-results.xml" ]; then
+            # Parse JUnit XML to get test statistics
+            total_tests=$(grep -o 'tests="[0-9]*"' test-results.xml | head -1 | sed 's/[^0-9]*//g')
+            failures=$(grep -o 'failures="[0-9]*"' test-results.xml | head -1 | sed 's/[^0-9]*//g')
+            errors=$(grep -o 'errors="[0-9]*"' test-results.xml | head -1 | sed 's/[^0-9]*//g')
+            skipped=$(grep -o 'skipped="[0-9]*"' test-results.xml | head -1 | sed 's/[^0-9]*//g')
+            
+            passed=$((total_tests - failures - errors - skipped))
+            
+            echo "### Test Statistics" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Metric | Count |" >> $GITHUB_STEP_SUMMARY
+            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+            echo "| Total Tests | $total_tests |" >> $GITHUB_STEP_SUMMARY
+            echo "| ✅ Passed | $passed |" >> $GITHUB_STEP_SUMMARY
+            echo "| ❌ Failed | $failures |" >> $GITHUB_STEP_SUMMARY
+            echo "| ⚠️ Errors | $errors |" >> $GITHUB_STEP_SUMMARY
+            echo "| ⏭️ Skipped | $skipped |" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            
+            # Calculate pass percentage
+            if [ $total_tests -gt 0 ]; then
+              pass_percentage=$((passed * 100 / total_tests))
+              echo "### Pass Rate: $pass_percentage%" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              # Show status emoji based on results
+              if [ $failures -eq 0 ] && [ $errors -eq 0 ]; then
+                echo "🎉 **All tests passed successfully!**" >> $GITHUB_STEP_SUMMARY
+              else
+                echo "⚠️ **Some tests failed or had errors.**" >> $GITHUB_STEP_SUMMARY
+              fi
+            fi
+            
+            # Show failed tests if any
+            if [ $failures -gt 0 ] || [ $errors -gt 0 ]; then
+              echo "" >> $GITHUB_STEP_SUMMARY
+              echo "### Failed/Errored Tests" >> $GITHUB_STEP_SUMMARY
+              echo "" >> $GITHUB_STEP_SUMMARY
+              
+              # Extract failed test cases
+              grep -A 2 '<testcase.*\(failure\|error\)' test-results.xml | \
+                grep -E 'name="|failure message|error message' | \
+                sed 's/.*name="\([^"]*\)".*/\1/' | \
+                sed 's/.*message="\([^"]*\)".*/  - \1/' | \
+                uniq >> $GITHUB_STEP_SUMMARY 2>/dev/null || echo "  (Failed to parse detailed error messages)" >> $GITHUB_STEP_SUMMARY
+            fi
+          
+          else
+            echo "❌ **Test results file not found!**" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "The test results artifact could not be downloaded or parsed." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "---" >> $GITHUB_STEP_SUMMARY
+          echo "*Report generated automatically from JUnit XML results*" >> $GITHUB_STEP_SUMMARY
