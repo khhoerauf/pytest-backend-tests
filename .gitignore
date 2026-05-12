@@ -8,3 +8,7 @@ __pycache__/
 *.bak
 *.swp
 *.~lock.*
+
+# JMeter results
+jmeter/results/
+jmeter.log
